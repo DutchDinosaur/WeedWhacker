@@ -36,6 +36,7 @@ public class manager : MonoBehaviour
     void Start()
     {
         camFSM = gameObject.GetComponent<Animator>();
+        DontDestroyOnLoad(gameObject);
 
     }
 
@@ -46,10 +47,24 @@ public class manager : MonoBehaviour
             time -= 1;
             yield return new WaitForSeconds(1);
         }
+
+        Physics.gravity = -Physics.gravity;
+
+
+        yield return new WaitForSeconds(3);
+        camFSM.enabled = false;
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 
     void Update()
     {
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            return;
+        }
+
+
         if (Input.GetKeyDown(KeyCode.Escape) || ESCextra)
         {
             camFSM.SetBool("ESC",true);
@@ -76,7 +91,10 @@ public class manager : MonoBehaviour
     {
         if (time <= 0)
         {
-            time = 120;
+            Physics.gravity = new Vector3(0,-9.8f,0);
+
+
+            time = 20;
             StartCoroutine(timer());
             Score = 0;
             MowUpgrade = false;
