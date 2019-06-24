@@ -33,11 +33,14 @@ public class manager : MonoBehaviour
 
     public int time = 0;
 
+
+    bool ded = false;
+
     void Start()
     {
         camFSM = gameObject.GetComponent<Animator>();
         DontDestroyOnLoad(gameObject);
-
+        Physics.gravity = new Vector3(0, -9.8f, 0);
     }
 
     IEnumerator timer()
@@ -55,12 +58,26 @@ public class manager : MonoBehaviour
         camFSM.enabled = false;
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+
+        yield return new WaitForSeconds(3);
+        GameObject.Destroy(this.gameObject, 1);
+        ded = true;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 
     void Update()
     {
+        if (ded)
+        {
+            return;
+        }
+
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 1)
         {
+            GameObject scrorre = GameObject.FindGameObjectWithTag("scor");
+
+            scrorre.GetComponent<Text>().text = "Your Score IS: " + Score.ToString();
+
             return;
         }
 
