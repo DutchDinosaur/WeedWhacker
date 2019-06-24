@@ -111,7 +111,7 @@ public class manager : MonoBehaviour
             Physics.gravity = new Vector3(0,-9.8f,0);
 
 
-            time = 20;
+            time = 120;
             StartCoroutine(timer());
             Score = 0;
             MowUpgrade = false;
